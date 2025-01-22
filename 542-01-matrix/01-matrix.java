@@ -22,7 +22,7 @@ class Solution {
 
         Queue<Pair> q = new LinkedList<>();
 
-        // Intializw value 1 assign edge with 0
+        // Intializw value 1 assign edge with 0 in dis matrix 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (mat[i][j] == 0) {
