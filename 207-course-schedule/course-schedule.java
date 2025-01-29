@@ -1,40 +1,45 @@
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<Integer>[] adj = new List[numCourses];
-        int[] indegree = new int[numCourses];
-        List<Integer> ans = new ArrayList<>();
-
-        for (int[] pair : prerequisites) {
-            int course = pair[0];
-            int prerequisite = pair[1];
-            if (adj[prerequisite] == null) {
-                adj[prerequisite] = new ArrayList<>();
-            }
-            adj[prerequisite].add(course);
-            indegree[course]++;
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for(int i=0; i < numCourses; i++){
+            adj.add(new ArrayList<>());
         }
 
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < numCourses; i++) {
-            if (indegree[i] == 0) {
-                queue.offer(i);
+        int m = prerequisites.length;
+        for(int i=0; i < m; i++){
+            adj.get(prerequisites[i][0]).add(prerequisites[i][1]);
+        }
+
+        int indegree [] = new int[numCourses];
+        for(int i=0; i < numCourses; i++){
+            for(int it: adj.get(i)){
+                indegree[it] ++;
+            }
+        }
+        
+        Queue<Integer> q = new LinkedList<>();
+        for(int i=0; i < numCourses; i++){
+            if(indegree[i] == 0){
+                q.add(i);
             }
         }
 
-        while (!queue.isEmpty()) {
-            int current = queue.poll();
-            ans.add(current);
+        List<Integer> topo = new ArrayList<Integer>();
 
-            if (adj[current] != null) {
-                for (int next : adj[current]) {
-                    indegree[next]--;
-                    if (indegree[next] == 0) {
-                        queue.offer(next);
-                    }
+        while(! q.isEmpty()){
+            int node = q.peek();
+            q.remove();
+
+            topo.add(node);
+            for(int it : adj.get(node)){
+                indegree[it] --;
+                if(indegree[it] == 0){
+                    q.add(it);
                 }
             }
         }
 
-        return ans.size() == numCourses;
+        if(topo.size() == numCourses) return true;
+        return false;
     }
 }
