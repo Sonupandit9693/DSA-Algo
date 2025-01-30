@@ -3,41 +3,35 @@ import java.util.*;
 class Solution {
     public int shortestPathLength(int[][] graph) {
         int n = graph.length;
-        if (n == 1) return 0;  // If there's only one node, no movement is needed.
-
-        // Queue stores (node, bitmask state, distance)
-        Queue<int[]> q = new LinkedList<>();
-        Set<String> visited = new HashSet<>();
-
-        // Initialize BFS from all nodes
+        Queue<int[]> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[n][1 << n];
+        
         for (int i = 0; i < n; i++) {
-            int mask = 1 << i;  // Bitmask with only 'i' visited
-            q.add(new int[]{i, mask, 0});
-            visited.add(i + "," + mask);
+            queue.add(new int[]{i, 1 << i});
+            visited[i][1 << i] = true;
         }
+        
+        int steps = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int[] state = queue.poll();
+                int node = state[0];
+                int mask = state[1];
 
-        int targetMask = (1 << n) - 1; // All nodes visited (111...1 in binary)
+                if (mask == (1 << n) - 1) return steps;
 
-        // BFS traversal
-        while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int node = cur[0], mask = cur[1], dist = cur[2];
-
-            // If all nodes are visited, return the shortest path
-            if (mask == targetMask) return dist;
-
-            // Explore neighbors
-            for (int neighbor : graph[node]) {
-                int nextMask = mask | (1 << neighbor); // Update bitmask
-                String state = neighbor + "," + nextMask;
-                
-                if (!visited.contains(state)) {
-                    visited.add(state);
-                    q.add(new int[]{neighbor, nextMask, dist + 1});
+                for (int neighbor : graph[node]) {
+                    int nextMask = mask | (1 << neighbor);
+                    if (!visited[neighbor][nextMask]) {
+                        queue.add(new int[]{neighbor, nextMask});
+                        visited[neighbor][nextMask] = true;
+                    }
                 }
             }
+            steps++;
         }
 
-        return -1; // This should never be reached in a connected graph
+        return -1;
     }
 }
