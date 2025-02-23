@@ -4,14 +4,15 @@ class Solution {
             return false;
         }
 
-        int characterCount [] = new int [26];
-        for (int i=0; i<s.length(); i++){
+        int characterCount[] = new int[26];
+
+        for(int i=0; i<s.length(); i++){
             characterCount[s.charAt(i) - 'a'] ++;
             characterCount[t.charAt(i) - 'a'] --;
         }
 
-        for(int count : characterCount){
-            if(count != 0){
+        for( int c : characterCount){
+            if(c != 0){
                 return false;
             }
         }
