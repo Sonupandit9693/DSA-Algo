@@ -35,8 +35,9 @@ class Solution {
         if(root == null){
             return ans;
         }
-
+        // call to level order traveesal by passing intializing levele at 0
         levelOrder(root, 0);
+        
         return ans;
     }
 }
