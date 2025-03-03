@@ -1,7 +1,9 @@
 class Twitter {
-    private static final int FEED_SIZE = 10;
-    private Map<Integer, LinkedList<int[]>> tweets;
+    // Map to store user tweets: userId -> list of [tweetId, timestamp]
+    private Map<Integer, List<int[]>> tweets;
+    // Map to store follow relationships: followerId -> set of followeeIds
     private Map<Integer, Set<Integer>> following;
+    // Global timestamp for ordering tweets
     private int timestamp;
 
     public Twitter() {
@@ -11,46 +13,49 @@ class Twitter {
     }
     
     public void postTweet(int userId, int tweetId) {
-        tweets.putIfAbsent(userId, new LinkedList<>());
-        LinkedList<int[]> userTweets = tweets.get(userId);
-        userTweets.addFirst(new int[]{tweetId, timestamp++});
-        if (userTweets.size() > FEED_SIZE) {
-            userTweets.removeLast();
-        }
+        // If user doesn't exist, create new list
+        tweets.putIfAbsent(userId, new ArrayList<>());
+        // Add tweet with current timestamp
+        tweets.get(userId).add(new int[]{tweetId, timestamp++});
     }
     
     public List<Integer> getNewsFeed(int userId) {
-        // Use a min-heap based on timestamp (most recent first)
-        PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> b[1] - a[1]);
+        // Priority queue to get most recent tweets (max heap based on timestamp)
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[1] - a[1]);
         
         // Add user's own tweets
         if (tweets.containsKey(userId)) {
-            heap.addAll(tweets.get(userId));
+            pq.addAll(tweets.get(userId));
         }
         
         // Add tweets from followed users
         Set<Integer> followees = following.getOrDefault(userId, new HashSet<>());
         for (int followeeId : followees) {
             if (tweets.containsKey(followeeId)) {
-                heap.addAll(tweets.get(followeeId));
+                pq.addAll(tweets.get(followeeId));
             }
         }
         
-        // Get up to 10 most recent tweets
-        List<Integer> result = new ArrayList<>();
-        while (!heap.isEmpty() && result.size() < FEED_SIZE) {
-            result.add(heap.poll()[0]);
+        // Get 10 most recent tweets
+        List<Integer> newsFeed = new ArrayList<>();
+        int count = 0;
+        while (!pq.isEmpty() && count < 10) {
+            newsFeed.add(pq.poll()[0]);
+            count++;
         }
         
-        return result;
+        return newsFeed;
     }
     
     public void follow(int followerId, int followeeId) {
+        // If follower doesn't exist, create new set
         following.putIfAbsent(followerId, new HashSet<>());
+        // Add followee to follower's set
         following.get(followerId).add(followeeId);
     }
     
     public void unfollow(int followerId, int followeeId) {
+        // Remove followee from follower's set if it exists
         if (following.containsKey(followerId)) {
             following.get(followerId).remove(followeeId);
         }
