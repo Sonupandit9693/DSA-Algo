@@ -5,7 +5,7 @@ class MedianFinder {
 
     public MedianFinder() {
         minHeap = new PriorityQueue<>(); // Min-heap (default behavior in Java)
-        maxHeap = new PriorityQueue<>(Collections.reverseOrder()); // Max-heap
+        maxHeap = new PriorityQueue<>((a ,b) -> b - a); // Max-heap
     }
     
     public void addNum(int num) {
