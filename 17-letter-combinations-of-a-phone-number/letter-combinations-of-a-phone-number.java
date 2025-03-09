@@ -1,36 +1,29 @@
 class Solution {
-    public List<String> letterCombinations(String digits) {
-        List<String> ans = new ArrayList<>();
+    // mapping digits to letter
+    private String[] digitToLetter = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 
+    public List<String> letterCombinations(String digits) {
+        List<String> combinations = new ArrayList<>();
+        // check if case digit is safe or not
         if(digits == null || digits.length() == 0){
-            return ans;
+            return combinations;
         }
 
-        Map<Character, String> digitToLetters = new HashMap<>();
-        digitToLetters.put('2', "abc");
-        digitToLetters.put('3', "def");
-        digitToLetters.put('4', "ghi");
-        digitToLetters.put('5', "jkl");
-        digitToLetters.put('6', "mno");
-        digitToLetters.put('7', "pqrs");
-        digitToLetters.put('8', "tuv");
-        digitToLetters.put('9', "wxyz");
-
-        solve(digits, 0, new StringBuilder(), ans, digitToLetters);
-        return ans;
+        backtrack(combinations, digits, "", 0);
+        return combinations;
     }
 
-    private void solve(String digits, int idx, StringBuilder comb, List<String> ans, Map<Character, String> digitToLetters){
-        if (idx == digits.length()){
-            ans.add(comb.toString());
+    private void backtrack(List<String> combinations, String digits, String currentCombo, int index){
+        // base case
+        if(index == digits.length()){
+            combinations.add(currentCombo);
             return;
         }
 
-        String dialnumber = digitToLetters.get(digits.charAt(idx));
-        for (char number : dialnumber.toCharArray()){
-            comb.append(number);
-            solve(digits, idx+1, comb, ans, digitToLetters);
-            comb.deleteCharAt(comb.length() - 1);
+        String letters = digitToLetter[digits.charAt(index) - '0'];
+        
+        for(char letter : letters.toCharArray()){
+            backtrack(combinations, digits, currentCombo + letter, index + 1);
         }
     }
 }
