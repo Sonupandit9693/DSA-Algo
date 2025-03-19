@@ -1,32 +1,37 @@
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-       if(strs.length == 0){
+        // check if strs is empty list
+        if(strs.length == 0){
             return new ArrayList<>();
-       }
-
-       HashMap<String, List> ansMap = new HashMap<>();
-       int count[] = new int[26];
-
-       for(String s : strs){
-        Arrays.fill(count, 0);
-        for(char c : s.toCharArray()){
-            count[c - 'a'] ++;
         }
 
-        // getrate hash key for match anagram
-        StringBuilder sb = new StringBuilder("");
-        for( int i=0; i<26; i++){
-            sb.append("#");
-            sb.append(count[i]);
+        HashMap<String, List> ansMap = new HashMap<>();
+
+        // create charater array of size 26
+        int count [] = new int [26];
+
+        for(String s: strs){
+            // intialize count arrya value with 0
+            Arrays.fill(count, 0);
+            for(int c: s.toCharArray()){
+                count[c - 'a'] ++;
+            }
+
+            // create hashkey for match group of nanagram
+            StringBuilder sb = new StringBuilder("");
+            // go for 26 charcter to genrate hashKey
+            for(int i=0; i<26; i++){
+                sb.append("#");
+                sb.append(count[i]);
+            }
+
+            String key = sb.toString();
+            if(! ansMap.containsKey(key)){
+                ansMap.put(key, new ArrayList<>());
+            }
+            ansMap.get(key).add(s);
         }
 
-        String key = sb.toString();
-        if(! ansMap.containsKey(key)){
-            ansMap.put(key, new ArrayList<>());
-        }
-        ansMap.get(key).add(s);
-       }
-
-       return new ArrayList(ansMap.values());
+        return new ArrayList(ansMap.values());
     }
 }
