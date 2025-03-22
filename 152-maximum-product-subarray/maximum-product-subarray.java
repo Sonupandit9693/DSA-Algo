@@ -1,8 +1,8 @@
 class Solution {
     public int maxProduct(int[] nums) {
-        int maxProduct = nums[0]; // Store the max product found
-        int currMax = nums[0]; // Max product at current index
-        int currMin = nums[0]; // Min product at current index (for negative numbers)
+        int maxProduct = nums[0]; 
+        int currMax = nums[0];
+        int currMin = nums[0]; 
 
         for (int i = 1; i < nums.length; i++) {
             if (nums[i] < 0) {
