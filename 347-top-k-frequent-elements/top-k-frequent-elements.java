@@ -2,31 +2,29 @@ import java.util.*;
 
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        // Step 1: Count frequency of each number
+        // store frequency of the number
         HashMap<Integer, Integer> countMap = new HashMap<>();
-        for (int num : nums) {
+
+        for(int num : nums){
             countMap.put(num, countMap.getOrDefault(num, 0) + 1);
         }
 
-        // Step 2: Create an array of lists (buckets)
-        List<Integer>[] bucket = new List[nums.length + 1]; // Max frequency can be nums.length
-        for (int i = 0; i <= nums.length; i++) {
-            bucket[i] = new ArrayList<>();
+        // step 2 create a heap for max size can be nums array length
+        Queue<Integer> heap = new PriorityQueue<>((a,b) -> countMap.get(a) - countMap.get(b));
+
+        for(int n : countMap.keySet()){
+            heap.add(n);
+            if(heap.size() > k){
+                heap.poll();
+            }
         }
 
-        // Step 3: Fill the bucket
-        for (int num : countMap.keySet()) {
-            int frequency = countMap.get(num);
-            bucket[frequency].add(num);
+        int ans[] = new int [k];
+        for(int i=0; i<k; i++){
+            ans[i] = heap.poll();
         }
 
-        // Step 4: Extract the k most frequent elements
-        List<Integer> result = new ArrayList<>();
-        for (int i = nums.length; i >= 0 && result.size() < k; i--) {
-            result.addAll(bucket[i]); // Add numbers from higher frequency bucket first
-        }
+        return ans;
 
-        // Convert list to array
-        return result.stream().mapToInt(i -> i).toArray();
     }
 }
