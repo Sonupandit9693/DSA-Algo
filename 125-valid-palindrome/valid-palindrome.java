@@ -4,11 +4,11 @@ class Solution {
         int right = s.length() -1;
 
         while(left < right){
-            // if left contains not nuber ot digit:
+            // if left contains any alphanumaric or digit
             while(left < right && !Character.isLetterOrDigit(s.charAt(left))){
                 left ++;
             }
-            // check for right not contains number or digit
+
             while(left < right && !Character.isLetterOrDigit(s.charAt(right))){
                 right --;
             }
