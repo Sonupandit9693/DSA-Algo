@@ -3,6 +3,7 @@ class Solution {
         if(s == null || s.length() == 0){
             return 0;
         }
+
         if(s.length() == 1){
             return 1;
         }
@@ -20,7 +21,8 @@ class Solution {
                 left ++;
             }
             set.add(c);
-            ans  = Math.max(ans, right - left + 1);
+
+            ans = Math.max(ans, right - left + 1);
             right ++;
         }
 
