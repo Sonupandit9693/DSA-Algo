@@ -1,17 +1,16 @@
 class Solution {
     public boolean isValid(String s) {
-        HashMap<Character, Character> tomapChar = new HashMap<>();
+        HashMap<Character, Character> tomapchar = new HashMap<>();
 
-        tomapChar.put(')', '(');
-        tomapChar.put(']', '[');
-        tomapChar.put('}', '{');
+        tomapchar.put(')', '(');
+        tomapchar.put('}', '{');
+        tomapchar.put(']', '[');
 
         Stack<Character> stack = new Stack<>();
 
-        for(int i=0; i<s.length(); i++){
+        for(int i=0; i < s.length(); i++){
             char c = s.charAt(i);
-
-            if(! tomapChar.containsKey(c)){
+            if(! tomapchar.containsKey(c)){
                 stack.push(c);
             }else{
                 if(stack.isEmpty()){
@@ -19,9 +18,8 @@ class Solution {
                 }
 
                 char topElement = stack.pop();
-                // stack.remove();
 
-                if(topElement != tomapChar.get(c)){
+                if(topElement != tomapchar.get(c)){
                     return false;
                 }
             }
