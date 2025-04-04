@@ -3,30 +3,35 @@ class Solution {
         Stack<Integer> stack = new Stack<>();
 
         for(String token : tokens){
-            if(isOperater(token)){
+            if(isOpertor(token)){
                 int b = stack.pop();
                 int a = stack.pop();
 
-                int result = calculateResult(token, a, b);
+                int result = calculateResult(token, a , b);
                 stack.push(result);
             }else{
                 stack.push(Integer.parseInt(token));
             }
         }
+
         return stack.pop();
     }
 
-    private boolean isOperater(String token){
+    boolean isOpertor (String token){
         return token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/");
     }
 
     private int calculateResult(String token, int a, int b){
         switch(token){
-            case "+" : return  a + b;
-            case "-" : return  a - b;
-            case "*" : return  a * b;
-            case "/" : return  a / b;
-            default : throw new IllegalArgumentException("Invalid options");
+            case "+" : return a + b;
+            case "-" : return a - b;
+            case "*" : return a * b;
+            case "/" : return a / b;
+            default : throw new IllegalArgumentException("Invalid Options");
         }
     }
 }
+
+
+
+// default : throw new IllegalArgumentException("Invalid options");
