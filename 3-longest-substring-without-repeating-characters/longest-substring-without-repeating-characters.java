@@ -8,11 +8,11 @@ class Solution {
             return 1;
         }
 
+        HashSet<Character> set = new HashSet<>();
+
         int left = 0;
         int right = 0;
         int ans = 0;
-
-        HashSet<Character> set = new HashSet<>();
 
         while(right < s.length()){
             char c = s.charAt(right);
@@ -21,7 +21,6 @@ class Solution {
                 left ++;
             }
             set.add(c);
-
             ans = Math.max(ans, right - left + 1);
             right ++;
         }
