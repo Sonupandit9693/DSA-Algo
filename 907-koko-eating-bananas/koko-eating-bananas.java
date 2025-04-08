@@ -1,26 +1,39 @@
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
-        int left = 1, right=1;
-        for(int pile: piles){
-            right = Math.max(right, pile);
+        int low = 1;
+        int high = 1;
+
+        for(int pile : piles){
+            high = Math.max(high, pile);
         }
 
-        while(left < right){
-            int mid = left + (right - left) / 2;
+        // System.out.println("\nHeight of pliels: " + high);
+       
+        while(low < high){
+            int mid = low + (high - low) / 2; // our Speed to the bannas
+            System.out.println("low value: " +  low);
+            System.out.println("high value: " +  high);
             if(canFinish(mid, piles, h)){
-                right = mid;
+
+                // search minimun speed so go left part
+                high = mid;
             }else{
-                left = mid + 1;
+                // other wise search on rigth that speed can finish then banna
+                low = mid + 1;
             }
+
+            
+
         }
 
-        return left;
+        return low;
     }
 
-    public static boolean canFinish(int speed, int[] piles, int h){
+    private boolean canFinish(int speed, int piles[], int h){
         int hour = 0;
-        for(int pile: piles){
-            hour += Math.ceil((double)pile / speed);
+
+        for(int pile : piles){
+            hour += Math.ceil((double) pile / speed);
         }
 
         return hour <= h;
