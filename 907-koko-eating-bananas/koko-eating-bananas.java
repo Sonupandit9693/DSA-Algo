@@ -11,8 +11,9 @@ class Solution {
        
         while(low < high){
             int mid = low + (high - low) / 2; // our Speed to the bannas
-            System.out.println("low value: " +  low);
-            System.out.println("high value: " +  high);
+            // System.out.println("low value: " +  low);
+            // System.out.println("high value: " +  high);
+            // System.out.println("mid: " +  mid);
             if(canFinish(mid, piles, h)){
 
                 // search minimun speed so go left part
@@ -33,7 +34,9 @@ class Solution {
         int hour = 0;
 
         for(int pile : piles){
-            hour += Math.ceil((double) pile / speed);
+            // System.out.println("ceil value is : " + Math.ceil((double) pile / speed));
+            hour += Math.ceil((double) pile / speed);;
+
         }
 
         return hour <= h;
