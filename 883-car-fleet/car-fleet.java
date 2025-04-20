@@ -7,22 +7,22 @@ class Solution {
             this.time = t;
         }
     }
-
     public int carFleet(int target, int[] position, int[] speed) {
         int n = position.length;
-        Car cars[] = new Car[n];
+        Car cars [] = new Car[n];
 
-        for (int i=0; i<n; i++){
-            cars[i] = new Car(position[i], (double)(target - position[i]) / (speed[i]));
+        for(int i=0; i<n; i++){
+            cars[i] = new Car(position[i], (double) (target - position[i]) / (speed[i]));
         }
-        Arrays.sort(cars, (a,b) -> Integer.compare(a.position, b.position));
 
-        int ans = 0;
+        Arrays.sort(cars, (a,b) -> Integer.compare(a.position, b.position)); // in Assending Order
+
+        int car_fleet = 0;
         int t = n-1;
 
-        while(t > 0){
+        while( t > 0){
             if(cars[t].time < cars[t-1].time){
-                ans ++;
+                car_fleet ++;
             }else{
                 cars[t-1] = cars[t];
             }
@@ -30,6 +30,6 @@ class Solution {
             t--;
         }
 
-        return ans + (t == 0 ? 1 : 0);
+        return car_fleet + (t == 0 ? 1: 0);
     }
 }
