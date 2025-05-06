@@ -1,31 +1,42 @@
-import java.util.Arrays;
-
 class Solution {
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-        int [] prices = new int [n];
+        // using bellom ford alogorithm
 
-        Arrays.fill(prices, Integer.MAX_VALUE);
+        int price[] = new int [n];
+        // mark all the value of price is infinitee
+        Arrays.fill(price, Integer.MAX_VALUE);
 
-        prices[src] = 0;
+        // we iterate with k+1 stop
 
-        for(int i=0; i<=k; i++){
-            int [] tmpPrices = Arrays.copyOf(prices, n);
+        price[src] = 0;
 
-            for(int [] flight : flights){
+        for(int i=0; i<= k; i++){
+            // declear temp arr to updates curr prices
+
+            int temp[] = Arrays.copyOf(price, n);
+
+            // go in each filght:
+            for(int[] flight : flights){
                 int s = flight[0];
                 int d = flight[1];
                 int p = flight[2];
 
-                if(prices[s] == Integer.MAX_VALUE) continue;
+                // check price if stilll infinite then not procedd 
 
-                if(prices[s] + p < tmpPrices[d]){
-                    tmpPrices[d] = prices[s] + p;
+                if(price[s] == Integer.MAX_VALUE){
+                    continue;
                 }
-            }
 
-            prices = tmpPrices;
+
+                // comapre minmum price
+                if(price[s] + p < temp[d]){
+                    temp[d] = price[s] + p;
+                }
+            } 
+
+            price = temp;
         }
 
-        return prices[dst] == Integer.MAX_VALUE ? -1 : prices[dst];
+        return price[dst] == Integer.MAX_VALUE? -1 : price[dst];
     }
 }
